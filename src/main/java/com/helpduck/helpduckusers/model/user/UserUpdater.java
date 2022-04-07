@@ -9,27 +9,24 @@ import com.helpduck.helpduckusers.model.NullStringVerify;
 public class UserUpdater {
 	private NullStringVerify verifier = new NullStringVerify();
 
-	private void UpdateData(User client, User updatedClient) {
-		if (!verifier.verify(updatedClient.getFirstName())) {
-			client.setFirstName(updatedClient.getFirstName());
+	private void UpdateData(User user, User updatedUser) {
+		if (!verifier.verify(updatedUser.getFirstName())) {
+			user.setFirstName(updatedUser.getFirstName());
 		}
 
-		if (!verifier.verify(updatedClient.getLastName())) {
-			client.setLastName(updatedClient.getLastName());
+		if (!verifier.verify(updatedUser.getLastName())) {
+			user.setLastName(updatedUser.getLastName());
 		}
 
-		if (!verifier.verify(updatedClient.getEmail())) {
-			client.setEmail(updatedClient.getEmail());
+		if (!verifier.verify(updatedUser.getEmail())) {
+			user.setEmail(updatedUser.getEmail());
 		}
-
-		
-		client.setGender(updatedClient.getGender());
 
 		// att DateTime when the user's info was updated
-		client.setUpdatedAt(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
-	} 
+		user.setUpdatedAt(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
+	}
 
-	public void Update(User client, User updatedClient) {
-		UpdateData(client, updatedClient);
+	public void Update(User user, User updatedUser) {
+		UpdateData(user, updatedUser);
 	}
 }

@@ -3,7 +3,6 @@ package com.helpduck.helpduckusers.model.hateoas;
 import java.time.LocalDateTime;
 
 import com.helpduck.helpduckusers.entity.User;
-import com.helpduck.helpduckusers.enums.GenderEnum;
 import com.helpduck.helpduckusers.enums.RoleEnum;
 
 import org.springframework.data.annotation.Id;
@@ -21,7 +20,6 @@ public class UserHateoas extends RepresentationModel<UserHateoas> {
 
   private String firstName;
   private String lastName;
-  private GenderEnum gender;
 
   private String email;
   private String password;
@@ -33,12 +31,15 @@ public class UserHateoas extends RepresentationModel<UserHateoas> {
 
   public UserHateoas(User user) {
     id = user.getId();
+
     firstName = user.getFirstName();
     lastName = user.getLastName();
-    gender = user.getGender();
+
     email = user.getEmail();
     password = user.getPassword();
+
     role = user.getRole();
+
     createdAt = user.getCreatedAt();
     updatedAt = user.getUpdatedAt();
   }

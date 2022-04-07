@@ -1,5 +1,7 @@
 package com.helpduck.helpduckusers.service;
 
+import java.util.Optional;
+
 import com.helpduck.helpduckusers.entity.User;
 import com.helpduck.helpduckusers.model.hateoas.UserHateoas;
 import com.helpduck.helpduckusers.repository.UserRepository;
@@ -18,6 +20,7 @@ public class UserService {
 
   @Transactional(readOnly = true)
   public Page<UserHateoas> findAll(Pageable pageable) {
+
     Page<User> users = repository.findAll(pageable);
     Page<UserHateoas> page = users.map(x -> new UserHateoas(x));
     return page;
@@ -25,8 +28,13 @@ public class UserService {
 
   @Transactional(readOnly = true)
   public UserHateoas findById(String id) {
-    User user = repository.findById(id).get();
-    UserHateoas userHateoas= new UserHateoas(user);
+
+    Optional<User> user = repository.findById(id);
+    if (user.isEmpty()) {
+      return null;
+    }
+
+    UserHateoas userHateoas = new UserHateoas(user.get());
     return userHateoas;
   }
 }
