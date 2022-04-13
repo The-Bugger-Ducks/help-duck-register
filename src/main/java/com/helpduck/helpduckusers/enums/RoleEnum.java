@@ -1,5 +1,5 @@
 package com.helpduck.helpduckusers.enums;
 
 public enum RoleEnum {
-  admin, support, user
+  admin, support, client
 }
