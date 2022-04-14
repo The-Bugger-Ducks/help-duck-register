@@ -12,7 +12,7 @@ As seguintes tecnologias e ferramentas foram utilizadas neste projeto: `Java, Sp
 
 ### :gear: Como utilizar
 
-Para consumir esta API, é preciso seguir o passo a passo abaixo ou utilizar a URL do serviço em nuvem (através deste link: [https://help-duck-tickets.herokuapp.com/tickets/](https://help-duck-tickets.herokuapp.com/tickets/)).
+Para consumir esta API, é preciso seguir o passo a passo abaixo ou utilizar a URL do serviço em nuvem (através deste link: [https://help-duck-users.herokuapp.com](https://help-duck-users.herokuapp.com)).
 
 - Tutorial para rodar o projeto
 
