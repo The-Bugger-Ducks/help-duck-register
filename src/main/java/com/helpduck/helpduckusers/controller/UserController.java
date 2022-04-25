@@ -39,14 +39,12 @@ public class UserController {
 	@GetMapping("/")
 	public ResponseEntity<Page<UserHateoas>> getUsers(Pageable pageable) {
 
-		ResponseEntity<Page<UserHateoas>> response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		Page<UserHateoas> pageUserHateoas = service.findAll(pageable);
-
-		if (!pageUserHateoas.isEmpty()) {
+		if (pageUserHateoas.isEmpty()) {
 			linkAdder.addLink(pageUserHateoas);
-			response = new ResponseEntity<Page<UserHateoas>>(pageUserHateoas, HttpStatus.FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return response;
+		return new ResponseEntity<Page<UserHateoas>>(pageUserHateoas, HttpStatus.FOUND);
 	}
 
 	@GetMapping("/{id}")
@@ -58,6 +56,7 @@ public class UserController {
 			linkAdder.addLink(userHateoas);
 			response = new ResponseEntity<UserHateoas>(userHateoas, HttpStatus.FOUND);
 		}
+
 		return response;
 	}
 
@@ -73,11 +72,13 @@ public class UserController {
 
 			user.setCreatedAt(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
 			user.setUpdatedAt(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
+
 			repository.save(user);
+
 			status = HttpStatus.CREATED;
 		}
-		return new ResponseEntity<User>(status);
 
+		return new ResponseEntity<User>(status);
 	}
 
 	@PutMapping("/update")
@@ -88,7 +89,7 @@ public class UserController {
 		if (!userOptional.isEmpty()) {
 			User user = userOptional.get();
 			UserUpdater updater = new UserUpdater();
-			updater.Update(user, updatedUser);
+			updater.updateData(user, updatedUser);
 			repository.save(user);
 			status = HttpStatus.OK;
 		} else {
