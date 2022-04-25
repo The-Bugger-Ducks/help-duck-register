@@ -1,7 +1,5 @@
 package com.helpduck.helpduckusers.controller;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.Optional;
 
 import com.helpduck.helpduckusers.entity.User;
@@ -16,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -38,52 +35,38 @@ public class UserController {
 
 	@GetMapping("/")
 	public ResponseEntity<Page<UserHateoas>> getUsers(Pageable pageable) {
-
 		Page<UserHateoas> pageUserHateoas = service.findAll(pageable);
 		if (pageUserHateoas.isEmpty()) {
-			linkAdder.addLink(pageUserHateoas);
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
+
+		linkAdder.addLink(pageUserHateoas);
 		return new ResponseEntity<Page<UserHateoas>>(pageUserHateoas, HttpStatus.FOUND);
 	}
 
 	@GetMapping("/{id}")
 	public ResponseEntity<UserHateoas> getUser(@PathVariable String id) {
-
-		ResponseEntity<UserHateoas> response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		UserHateoas userHateoas = service.findById(id);
-		if (userHateoas != null) {
-			linkAdder.addLink(userHateoas);
-			response = new ResponseEntity<UserHateoas>(userHateoas, HttpStatus.FOUND);
+		if (userHateoas == null) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
-		return response;
+		linkAdder.addLink(userHateoas);
+		return new ResponseEntity<UserHateoas>(userHateoas, HttpStatus.FOUND);
 	}
 
 	@PostMapping("/create")
 	public ResponseEntity<User> UserCreate(@RequestBody User user) {
-
-		HttpStatus status = HttpStatus.CONFLICT;
-		if (user.getId() == null) {
-
-			BCryptPasswordEncoder toCriptografy = new BCryptPasswordEncoder();
-			String passwordEncrypted = toCriptografy.encode(user.getPassword());
-			user.setPassword(passwordEncrypted);
-
-			user.setCreatedAt(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
-			user.setUpdatedAt(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
-
-			repository.save(user);
-
-			status = HttpStatus.CREATED;
+		if (user.getId() != null) {
+			return new ResponseEntity<User>(HttpStatus.CONFLICT);
 		}
 
-		return new ResponseEntity<User>(status);
+		service.createUser(user);
+		return new ResponseEntity<User>(HttpStatus.CREATED);
 	}
 
 	@PutMapping("/update")
 	public ResponseEntity<User> UserUpdate(@RequestBody User updatedUser) {
-
 		HttpStatus status = HttpStatus.CONFLICT;
 		Optional<User> userOptional = repository.findById(updatedUser.getId());
 		if (!userOptional.isEmpty()) {
@@ -95,12 +78,12 @@ public class UserController {
 		} else {
 			status = HttpStatus.BAD_REQUEST;
 		}
+
 		return new ResponseEntity<User>(status);
 	}
 
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<User> DeleteUser(@PathVariable String id) {
-
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		Optional<User> userOptional = repository.findById(id);
 		if (!userOptional.isEmpty()) {
