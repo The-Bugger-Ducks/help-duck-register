@@ -60,6 +60,10 @@ O servidor inciará localmente na porta 8080. Use o Insomnia para simular requis
 
 </div>
 
+### Swagger
+Para utilizar a api do swagger em nosso projeto acesse: http://localhost:8080/swagger-ui/
+
+
 ### Explicação da estrutura das pastas
 
 | Pasta                                                     | Definição                                                                                      |
