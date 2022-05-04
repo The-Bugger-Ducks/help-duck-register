@@ -20,29 +20,33 @@ public class JWTUtil {
 
   public String gerarToken(String email) {
     Date dateNow = new Date();
-    Date dataExpiracao = new Date(dateNow.getTime() + Long.parseLong(expiration));
+    Date expirationDate = new Date(dateNow.getTime() + Long.parseLong(expiration));
 
-    return Jwts.builder().setIssuer("BATATINHA QUENTE - HEHE")
+    return Jwts.builder()
         .setSubject(email)
         .setIssuedAt(dateNow)
-        .setExpiration(dataExpiracao)
+        .setExpiration(expirationDate)
         .signWith(SignatureAlgorithm.HS256, secretkey).compact();
   }
 
-  public boolean validarToken(String jwtToken) {
-    Claims reivindicacoes = obterReivindicacoes(jwtToken);
-    if (reivindicacoes != null) {
-      String nomeUsuario = reivindicacoes.getSubject();
-      Date dataExpiracao = reivindicacoes.getExpiration();
-      Date agora = new Date(System.currentTimeMillis());
-      if (nomeUsuario != null && dataExpiracao != null && agora.before(dataExpiracao)) {
+  public boolean validateToken(String jwtToken) {
+    Claims claims = getClaims(jwtToken);
+    if (claims != null) {
+
+      String username = claims.getSubject();
+
+      Date expirationDate = claims.getExpiration();
+
+      Date dateNow = new Date(System.currentTimeMillis());
+
+      if (username != null && expirationDate != null && dateNow.before(expirationDate)) {
         return true;
       }
     }
     return false;
   }
 
-  private Claims obterReivindicacoes(String jwtToken) {
+  private Claims getClaims(String jwtToken) {
     try {
       return Jwts.parser().setSigningKey(secretkey).parseClaimsJws(jwtToken).getBody();
     } catch (Exception e) {
@@ -50,11 +54,11 @@ public class JWTUtil {
     }
   }
 
-  public String obterNomeUsuairo(String jwtToken) {
-    Claims reivindicacoes = obterReivindicacoes(jwtToken);
-    if (reivindicacoes != null) {
-      String nomeUsuario = reivindicacoes.getSubject();
-      return nomeUsuario;
+  public String getUsername(String jwtToken) {
+    Claims claims = getClaims(jwtToken);
+    if (claims != null) {
+      String username = claims.getSubject();
+      return username;
     }
     return null;
   }

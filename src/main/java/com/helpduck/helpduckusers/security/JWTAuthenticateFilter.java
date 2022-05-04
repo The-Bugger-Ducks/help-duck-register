@@ -8,12 +8,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.helpduck.helpduckusers.entity.User;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 public class JWTAuthenticateFilter extends UsernamePasswordAuthenticationFilter {
@@ -32,24 +34,17 @@ public class JWTAuthenticateFilter extends UsernamePasswordAuthenticationFilter 
       throws AuthenticationException {
 
     try {
-      String username = "thiago@gmail.com";
-      String password = "1234";
+      User user = new ObjectMapper().readValue(request.getInputStream(), User.class);
 
-      BCryptPasswordEncoder toCriptografy = new BCryptPasswordEncoder();
-      String passwordEncrypted = toCriptografy.encode(password);
+      return authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+          user.getEmail(),
+          user.getPassword(),
+          new ArrayList<>()
 
-      System.out.println("batata");
-      System.out.println(username);
-      System.out.println(password);
+      ));
 
-      UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,
-          passwordEncrypted, new ArrayList<>());
-
-      Authentication authentication = authenticationManager.authenticate(authenticationToken);
-
-      return authentication;
     } catch (Exception e) {
-      throw new RuntimeException("Error to authenticate the user " + e.getMessage());
+      throw new RuntimeException("Error to authenticate the user " + e);
     }
   }
 
@@ -57,9 +52,10 @@ public class JWTAuthenticateFilter extends UsernamePasswordAuthenticationFilter 
   protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
       Authentication authResult) throws IOException, ServletException {
     UserDetails userData = (UserDetails) authResult.getPrincipal();
+
     String token = jwtUtil.gerarToken(userData.getUsername());
 
-    response.addHeader("Authorization", "Bearer " + token);
-
+    response.getWriter().write(token);
+    response.getWriter().flush();
   }
 }

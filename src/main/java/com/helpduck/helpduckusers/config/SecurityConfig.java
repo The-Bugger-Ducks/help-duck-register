@@ -2,6 +2,9 @@ package com.helpduck.helpduckusers.config;
 
 import java.util.Arrays;
 
+import com.helpduck.helpduckusers.security.JWTAuthenticateFilter;
+import com.helpduck.helpduckusers.security.JWTUtil;
+import com.helpduck.helpduckusers.security.JWTValitadeFilter;
 import com.helpduck.helpduckusers.service.CustomUserDetailsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +33,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	CustomUserDetailsService userDetailsService;
 
+	@Autowired
+	JWTUtil jwtUtil;
+
 	private static final String[] publicRoutes = { "/auth/authentication" };
 
 	private BCryptPasswordEncoder passwordEncoder() {
@@ -45,7 +51,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.cors().and().csrf().disable();
 
 		http.authorizeRequests().antMatchers(publicRoutes).permitAll().anyRequest().authenticated();
-		// http.addFilter(new JWTAuthenticateFilter(authenticationManager(), JWTUtil));
+		http.addFilter(jwtAuthorizationFilter());
+		http.addFilter(new JWTValitadeFilter(authenticationManager()));
 
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 	}
@@ -53,6 +60,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
+	}
+
+	public JWTAuthenticateFilter jwtAuthorizationFilter() throws Exception {
+		JWTAuthenticateFilter jwtAuthenticationFilter = new JWTAuthenticateFilter(authenticationManager(), jwtUtil);
+		jwtAuthenticationFilter.setFilterProcessesUrl("/auth/authentication");
+		return jwtAuthenticationFilter;
 	}
 
 	@Bean

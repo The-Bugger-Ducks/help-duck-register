@@ -17,9 +17,6 @@ public class UserPrincipal implements UserDetails {
   private Collection<? extends GrantedAuthority> authorities;
 
   public UserPrincipal(User user) {
-    System.out.println("Quente");
-    System.out.println(user);
-
     this.email = user.getEmail();
     this.password = user.getPassword();
 
