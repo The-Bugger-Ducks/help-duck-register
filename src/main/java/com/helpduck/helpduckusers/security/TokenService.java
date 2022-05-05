@@ -10,7 +10,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Service
-public class JWTUtil {
+public class TokenService {
 
   @Value("${jwt.secretkey}")
   private String secretkey;
@@ -18,13 +18,11 @@ public class JWTUtil {
   @Value("${jwt.expiration}")
   private String expiration;
 
-  public String gerarToken(String email) {
-    Date dateNow = new Date();
-    Date expirationDate = new Date(dateNow.getTime() + Long.parseLong(expiration));
+  public String generateToken(String email) {
+    Date expirationDate = new Date(System.currentTimeMillis() + Long.parseLong(expiration));
 
     return Jwts.builder()
         .setSubject(email)
-        .setIssuedAt(dateNow)
         .setExpiration(expirationDate)
         .signWith(SignatureAlgorithm.HS256, secretkey).compact();
   }
