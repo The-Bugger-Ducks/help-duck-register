@@ -16,10 +16,10 @@ public class TokenService {
   private String secretkey;
 
   @Value("${jwt.expiration}")
-  private String expiration;
+  private Long expiration;
 
   public String generateToken(String email) {
-    Date expirationDate = new Date(System.currentTimeMillis() + Long.parseLong(expiration));
+    Date expirationDate = new Date(System.currentTimeMillis() + expiration);
 
     return Jwts.builder()
         .setSubject(email)
