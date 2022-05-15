@@ -12,7 +12,7 @@ As seguintes tecnologias e ferramentas foram utilizadas neste projeto: `Java, Sp
 
 ### :gear: Como utilizar
 
-Para consumir esta API, é preciso seguir o passo a passo abaixo ou utilizar a URL do serviço em nuvem (através deste link: [https://help-duck-users.herokuapp.com](https://help-duck-users.herokuapp.com)).
+Para consumir esta API, é preciso seguir o passo a passo abaixo ou utilizar a URL do serviço em nuvem (através deste link, desde que de posse do token de autorização: [https://help-duck-register.herokuapp.com](https://help-duck-register.herokuapp.com)).
 
 - Tutorial para rodar o projeto
 
@@ -34,31 +34,31 @@ Para prosseguir, é preciso que todas as ferramentas necessárias estejam devida
 
 ```bash
 # Baixe este repositório ou clone pelo Git usando o comando:
-$ git clone https://github.com/The-Bugger-Ducks/help-duck-users-microservice.git
+$ git clone https://github.com/The-Bugger-Ducks/help-duck-register.git
 
 # Acesse a pasta do projeto
-$ cd help-duck-users-microservice
+$ cd help-duck-register
 
 # Espere o Maven carregar as dependências do projeto (são listadas no arquivo pom.xml)
 
 # Execute o projeto utilizando sua IDE preferida (Eclipse, VS Code, IntelliJ, etc.)
 ```
 
-O servidor inciará localmente na porta 8080. Use o Insomnia para simular requisições e respostas das rotas (pelo link [https://localhost:8081](https://localhost:8080)) ou utilize o projeto fron-end do "Help Duck" para executar as funcionalidades da aplicação (acesse o repositório por [este link](https://github.com/The-Bugger-Ducks/help-duck-web)).
+O servidor inciará localmente na porta 8080. Use o Insomnia para simular requisições e respostas das rotas (pelo link [https://localhost:8080](https://localhost:8080)) ou utilize o projeto fron-end do "Help Duck" para executar as funcionalidades da aplicação (acesse o repositório por [este link](https://github.com/The-Bugger-Ducks/help-duck-web)).
 
 ## :railway_track: Rotas disponíveis
 
 <div align="center">
 
-|                                                                    Tipo | Rota                 | Ação                           |
-| ----------------------------------------------------------------------: | :------------------- | :----------------------------- |
-|   [![](https://img.shields.io/badge/POST-4682B4?style=for-the-badge)]() | `/auth/authentication`            | Autenticação de usuários           |
-|    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/users/`            | Listagem de usuários           |
-|    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/users/{id}`        | Dados de um usuário específico |
-|   [![](https://img.shields.io/badge/POST-4682B4?style=for-the-badge)]() | `/users/create`      | Cadastro de usuários           |
-|    [![](https://img.shields.io/badge/PUT-9370DB?style=for-the-badge)]() | `/users/update`      | Alteração dos dados do usuário |
-| [![](https://img.shields.io/badge/DELETE-CD853F?style=for-the-badge)]() | `/users/delete/{id}` | Exclusão de usuários           |
-|    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/equipment/`            | Listagem de equipamentos          |
+|                                                                    Tipo | Rota                     | Ação                               |
+| ----------------------------------------------------------------------: | :----------------------- | :--------------------------------- |
+|   [![](https://img.shields.io/badge/POST-4682B4?style=for-the-badge)]() | `/auth/authentication`   | Autenticação de usuários           |
+|    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/users/`                | Listagem de usuários               |
+|    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/users/{id}`            | Dados de um usuário específico     |
+|   [![](https://img.shields.io/badge/POST-4682B4?style=for-the-badge)]() | `/users/create`          | Cadastro de usuários               |
+|    [![](https://img.shields.io/badge/PUT-9370DB?style=for-the-badge)]() | `/users/update`          | Alteração dos dados do usuário     |
+| [![](https://img.shields.io/badge/DELETE-CD853F?style=for-the-badge)]() | `/users/delete/{id}`     | Exclusão de usuários               |
+|    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/equipment/`            | Listagem de equipamentos           |
 |    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/equipment/{id}`        | Dados de um equipamento específico |
 |   [![](https://img.shields.io/badge/POST-4682B4?style=for-the-badge)]() | `/equipment/create`      | Cadastro de equipamentos           |
 |    [![](https://img.shields.io/badge/PUT-9370DB?style=for-the-badge)]() | `/equipment/update`      | Alteração dos dados do equipamento |
@@ -68,8 +68,8 @@ O servidor inciará localmente na porta 8080. Use o Insomnia para simular requis
 
 ### Explicação da estrutura das pastas
 
-| Pasta                                                     | Definição                                                                                      |
-| --------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| Pasta                                                     | Definição                                                                        |
+| --------------------------------------------------------- | -------------------------------------------------------------------------------- |
 | :open_file_folder: main/ .../                             | Arquivos com o código fonte do projeto                                           |
 | :open_file_folder: main/ .../ config                      | Configuração de cors, csrf, etc                                                  |
 | :open_file_folder: main/ .../ controller                  | Arquivos com os métodos de requisição das rotas                                  |
