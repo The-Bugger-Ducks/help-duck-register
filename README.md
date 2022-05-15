@@ -52,11 +52,17 @@ O servidor inciará localmente na porta 8080. Use o Insomnia para simular requis
 
 |                                                                    Tipo | Rota                 | Ação                           |
 | ----------------------------------------------------------------------: | :------------------- | :----------------------------- |
+|   [![](https://img.shields.io/badge/POST-4682B4?style=for-the-badge)]() | `/auth/authentication`            | Autenticação de usuários           |
 |    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/users/`            | Listagem de usuários           |
 |    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/users/{id}`        | Dados de um usuário específico |
 |   [![](https://img.shields.io/badge/POST-4682B4?style=for-the-badge)]() | `/users/create`      | Cadastro de usuários           |
 |    [![](https://img.shields.io/badge/PUT-9370DB?style=for-the-badge)]() | `/users/update`      | Alteração dos dados do usuário |
 | [![](https://img.shields.io/badge/DELETE-CD853F?style=for-the-badge)]() | `/users/delete/{id}` | Exclusão de usuários           |
+|    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/equipment/`            | Listagem de equipamentos          |
+|    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/equipment/{id}`        | Dados de um equipamento específico |
+|   [![](https://img.shields.io/badge/POST-4682B4?style=for-the-badge)]() | `/equipment/create`      | Cadastro de equipamentos           |
+|    [![](https://img.shields.io/badge/PUT-9370DB?style=for-the-badge)]() | `/equipment/update`      | Alteração dos dados do equipamento |
+| [![](https://img.shields.io/badge/DELETE-CD853F?style=for-the-badge)]() | `/equipment/delete/{id}` | Exclusão de equipamentos           |
 
 </div>
 
@@ -64,13 +70,16 @@ O servidor inciará localmente na porta 8080. Use o Insomnia para simular requis
 
 | Pasta                                                     | Definição                                                                                      |
 | --------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| :open_file_folder: main/ .../                             | Arquivos com o código fonte do projeto                                                         |
-| :open_file_folder: main/ .../ config                      | Configuração de cors, csrf, etc                                                                |
-| :open_file_folder: main/ .../ controller                  | Arquivos com os métodos de requisição das rotas                                                |
+| :open_file_folder: main/ .../                             | Arquivos com o código fonte do projeto                                           |
+| :open_file_folder: main/ .../ config                      | Configuração de cors, csrf, etc                                                  |
+| :open_file_folder: main/ .../ controller                  | Arquivos com os métodos de requisição das rotas                                  |
 | :open_file_folder: main/ .../ entity                      | Arquivos com funções mais especificas, ex: atualizador, adicionador de links para HATEOAS, etc |
-| :open_file_folder: main/ .../ enums                       | Arquivos de padronização de entrada para campos específicos no banco de dados                  |
-| :open_file_folder: main/ .../ repository                  | Arquivo para utilização de CRUD de entidades (collection - mongodb) do projeto                 |
-| :page_facing_up: main/ .../ HelpduckusersApplication.java | Arquivo principal do projeto                                                                   |
-| :open_file_folder: main/ resources/                       | Arquivos para configurações globais do projeto (ex: credenciais em banco de dados)             |
-| :page_facing_up: docker-compose                           | Arquivo usado para "conteinerizar" um banco mongo local                                        |
-| :page_facing_up: pom.xml                                  | Arquivo usado gerenciar as dependencias do projeto com o Maven                                 |
+| :open_file_folder: main/ .../ enums                       | Arquivos de padronização de entrada para campos específicos no banco de dados    |
+| :open_file_folder: main/ .../ model                       |Arquivos que fazem a aplicação de HATEOAS e manipulação de dados                  |
+| :open_file_folder: main/ .../ repository                  | Arquivo para utilização de CRUD de entidades (collection - mongodb) do projeto   |
+| :open_file_folder: main/ .../ security                    | Arquivos que contém os serviços utilizados no projeto                            |
+| :open_file_folder: main/ .../ service                     | Arquivos de configuração de segurança (como tokens)                              |
+| :page_facing_up: main/ .../ HelpduckusersApplication.java | Arquivo principal do projeto                                                     |
+| :open_file_folder: main/ resources/                       | Arquivos para configurações globais do projeto (ex: credenciais em banco de dados) |
+| :page_facing_up: docker-compose                           | Arquivo usado para "conteinerizar" um banco mongo local                          |
+| :page_facing_up: pom.xml                                  | Arquivo usado gerenciar as dependencias do projeto com o Maven                   |
