@@ -1,5 +1,6 @@
 package com.helpduck.helpduckusers.model;
 
+import com.helpduck.helpduckusers.enums.RequestingDepartmentEnum;
 import com.helpduck.helpduckusers.enums.RoleEnum;
 
 public class NullStringVerify {
@@ -17,6 +18,14 @@ public class NullStringVerify {
 	public boolean verify(RoleEnum role) {
 		boolean nullValue = true;
 		if (!(role == null)) {
+			nullValue = false;
+		}
+		return nullValue;
+	}
+
+	public boolean verify(RequestingDepartmentEnum requestingDepartment) {
+		boolean nullValue = true;
+		if (!(requestingDepartment == null)) {
 			nullValue = false;
 		}
 		return nullValue;

@@ -2,6 +2,7 @@ package com.helpduck.helpduckusers.entity;
 
 import java.time.LocalDateTime;
 
+import com.helpduck.helpduckusers.enums.RequestingDepartmentEnum;
 import com.helpduck.helpduckusers.enums.RoleEnum;
 
 import org.springframework.data.annotation.Id;
@@ -25,6 +26,7 @@ public class User {
 	private String password;
 
 	private RoleEnum role;
+	private RequestingDepartmentEnum requestingDepartment;
 
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
