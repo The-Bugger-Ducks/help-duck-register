@@ -93,10 +93,11 @@ public class UserController {
 		return new ResponseEntity<User>(status);
 	}
 
-	@PutMapping("/update-password/{userId}")
-	public ResponseEntity<User> updatePassword(@PathVariable String userId, @RequestBody ObjectNode objectNode) {
+	@PutMapping("/update-password")
+	public ResponseEntity<User> updatePassword(@RequestBody ObjectNode objectNode) {
 
 		HttpStatus status = HttpStatus.CONFLICT;
+		String userId = objectNode.get("userId").asText();
 		String newPassword = objectNode.get("newPassword").asText();
 		String oldPassword = objectNode.get("oldPassword").asText();
 
@@ -114,7 +115,6 @@ public class UserController {
 			}
 
 		} else {
-
 			status = HttpStatus.BAD_REQUEST;
 		}
 
