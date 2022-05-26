@@ -2,6 +2,7 @@ package com.helpduck.helpduckusers.controller;
 
 import java.util.Optional;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.helpduck.helpduckusers.entity.User;
 import com.helpduck.helpduckusers.model.hateoas.UserHateoas;
 import com.helpduck.helpduckusers.model.user.UserLinkAdder;
@@ -15,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,9 +36,12 @@ public class UserController {
 	@Autowired
 	private UserService service;
 
+	BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
 	@PreAuthorize("hasRole('admin')")
 	@GetMapping("/")
 	public ResponseEntity<Page<UserHateoas>> getUsers(Pageable pageable) {
+
 		Page<UserHateoas> pageUserHateoas = service.findAll(pageable);
 		if (pageUserHateoas.isEmpty()) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -48,6 +53,7 @@ public class UserController {
 
 	@GetMapping("/{id}")
 	public ResponseEntity<UserHateoas> getUser(@PathVariable String id) {
+
 		UserHateoas userHateoas = service.findById(id);
 		if (userHateoas == null) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -60,6 +66,7 @@ public class UserController {
 	@PreAuthorize("hasRole('admin')")
 	@PostMapping("/create")
 	public ResponseEntity<User> UserCreate(@RequestBody User user) {
+
 		if (user.getId() != null) {
 			return new ResponseEntity<User>(HttpStatus.CONFLICT);
 		}
@@ -70,6 +77,7 @@ public class UserController {
 
 	@PutMapping("/update")
 	public ResponseEntity<User> UserUpdate(@RequestBody User updatedUser) {
+
 		HttpStatus status = HttpStatus.CONFLICT;
 		Optional<User> userOptional = repository.findById(updatedUser.getId());
 		if (!userOptional.isEmpty()) {
@@ -85,9 +93,38 @@ public class UserController {
 		return new ResponseEntity<User>(status);
 	}
 
+	@PutMapping("/update-password/{userId}")
+	public ResponseEntity<User> updatePassword(@PathVariable String userId, @RequestBody ObjectNode objectNode) {
+
+		HttpStatus status = HttpStatus.CONFLICT;
+		String newPassword = objectNode.get("newPassword").asText();
+		String oldPassword = objectNode.get("oldPassword").asText();
+
+		Optional<User> userOptional = repository.findById(userId);
+		if (!userOptional.isEmpty()) {
+			User user = userOptional.get();
+			String dbPassword = user.getPassword();
+
+			if (passwordEncoder.matches(oldPassword, dbPassword)) {
+				user.setPassword(passwordEncoder.encode(newPassword));
+				repository.save(user);
+				status = HttpStatus.OK;
+			} else {
+				status = HttpStatus.UNAUTHORIZED;
+			}
+
+		} else {
+
+			status = HttpStatus.BAD_REQUEST;
+		}
+
+		return new ResponseEntity<User>(status);
+	}
+
 	@PreAuthorize("hasRole('admin')")
 	@DeleteMapping("/delete/{id}")
 	public ResponseEntity<User> DeleteUser(@PathVariable String id) {
+
 		HttpStatus status = HttpStatus.BAD_REQUEST;
 		Optional<User> userOptional = repository.findById(id);
 		if (!userOptional.isEmpty()) {
@@ -96,4 +133,5 @@ public class UserController {
 		}
 		return new ResponseEntity<User>(status);
 	}
+
 }
