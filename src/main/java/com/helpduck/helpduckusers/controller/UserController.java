@@ -96,4 +96,20 @@ public class UserController {
 		}
 		return new ResponseEntity<User>(status);
 	}
+
+	@PreAuthorize("hasRole('admin')")
+	@GetMapping("")
+	public ResponseEntity<Page<UserHateoas>> getUserByName(Pageable pageable, @PathVariable String userName) {
+
+		ResponseEntity<Page<UserHateoas>> response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		Page<UserHateoas> pageUserHateoas = service.findAllByUserName(pageable, userName);
+
+		if (!pageUserHateoas.isEmpty()) {
+			linkAdder.addLink((pageUserHateoas));
+			response = new ResponseEntity<Page<UserHateoas>>(pageUserHateoas, HttpStatus.FOUND);
+		}
+
+		return response;
+
+	}
 }

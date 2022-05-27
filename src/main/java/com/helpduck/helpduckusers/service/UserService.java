@@ -40,6 +40,13 @@ public class UserService {
   }
 
   @Transactional(readOnly = true)
+  public Page<UserHateoas> findAllByUserName(Pageable pageable, String name) {
+    Page<User> users = repository.findAllByName(pageable, name);
+    Page<UserHateoas> userHateoas = users.map(x -> new UserHateoas(x));
+    return userHateoas;
+  }
+
+  @Transactional(readOnly = true)
   public User createUser(User user) {
     BCryptPasswordEncoder toCriptografy = new BCryptPasswordEncoder();
     String passwordEncrypted = toCriptografy.encode(user.getPassword());

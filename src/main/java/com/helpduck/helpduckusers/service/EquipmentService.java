@@ -34,6 +34,12 @@ public class EquipmentService {
         return equipmentHateoas;
     }
 
+    @Transactional(readOnly = true)
+    public Page<EquipmentHateoas> findAllByEquipmentName(Pageable pageable, String name) {
+      Page<Equipment> equipments = repository.findAllByName(pageable, name);
+      Page<EquipmentHateoas> equipmentHateoas = equipments.map(x -> new EquipmentHateoas(x));
+      return equipmentHateoas;
+    }
 
     @Transactional(readOnly = true)
     public Equipment createEquipment(Equipment equipment){

@@ -94,4 +94,19 @@ public class EquipmentController {
         return new ResponseEntity<Equipment>(status);
     }
 
+    @GetMapping("")
+    public ResponseEntity<Page<EquipmentHateoas>> getEquipmentByName(Pageable pageable, @PathVariable String equipmentName) {
+
+        ResponseEntity<Page<EquipmentHateoas>> response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        Page<EquipmentHateoas> pageEquipmentHateoas = service.findAllByEquipmentName(pageable, equipmentName);
+
+        if (!pageEquipmentHateoas.isEmpty()) {
+            linkAdder.addLink((pageEquipmentHateoas));
+            response = new ResponseEntity<Page<EquipmentHateoas>>(pageEquipmentHateoas, HttpStatus.FOUND);
+        }
+
+        return response;
+
+    }
+
 }
