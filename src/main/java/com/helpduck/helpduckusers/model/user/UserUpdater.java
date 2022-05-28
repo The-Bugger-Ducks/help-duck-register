@@ -26,8 +26,8 @@ public class UserUpdater {
 			user.setRole(updatedUser.getRole());
 		}
 
-		if (!verifier.verify(updatedUser.getRequestingDepartment())) {
-			user.setRequestingDepartment(updatedUser.getRequestingDepartment());
+		if (!verifier.verify(updatedUser.getDepartment())) {
+			user.setDepartment(updatedUser.getDepartment());
 		}
 
 		// att DateTime when the user's info was updated
