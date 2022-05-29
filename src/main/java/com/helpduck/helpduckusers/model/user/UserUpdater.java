@@ -26,6 +26,10 @@ public class UserUpdater {
 			user.setRole(updatedUser.getRole());
 		}
 
+		if (!verifier.verify(updatedUser.getDepartment())) {
+			user.setDepartment(updatedUser.getDepartment());
+		}
+
 		// att DateTime when the user's info was updated
 		user.setUpdatedAt(LocalDateTime.now(ZoneId.of("America/Sao_Paulo")));
 	}
