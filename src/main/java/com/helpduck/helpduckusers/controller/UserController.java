@@ -4,6 +4,7 @@ import java.util.Optional;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.helpduck.helpduckusers.entity.User;
+import com.helpduck.helpduckusers.enums.RoleEnum;
 import com.helpduck.helpduckusers.model.hateoas.UserHateoas;
 import com.helpduck.helpduckusers.model.user.UserLinkAdder;
 import com.helpduck.helpduckusers.model.user.UserUpdater;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -61,6 +63,30 @@ public class UserController {
 
 		linkAdder.addLink(userHateoas);
 		return new ResponseEntity<UserHateoas>(userHateoas, HttpStatus.FOUND);
+	}
+
+	@GetMapping("/search")
+	public ResponseEntity<Page<User>> getAllUserByUsername(
+			@RequestParam Optional<RoleEnum> role,
+			@RequestParam Optional<String> username,
+			Pageable page) {
+
+		ResponseEntity<Page<User>> response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+		Page<User> pageableUser;
+
+		if (username.isPresent() && role.isPresent()) {
+			pageableUser = repository.searchUsernameAndFilterPerRole(page, username.get(), role.get());
+		} else if (username.isPresent() && !role.isPresent()) {
+			pageableUser = repository.searchUsername(page, username.get());
+		} else {
+			pageableUser = repository.findByRole(page, role.get());
+		}
+
+		if (pageableUser.getContent().size() > 0) {
+			return new ResponseEntity<Page<User>>(pageableUser, HttpStatus.FOUND);
+		}
+		return response;
 	}
 
 	@PreAuthorize("hasRole('admin')")
