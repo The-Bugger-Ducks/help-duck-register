@@ -5,6 +5,7 @@ import java.time.ZoneId;
 import java.util.Optional;
 
 import com.helpduck.helpduckusers.entity.User;
+import com.helpduck.helpduckusers.enums.RoleEnum;
 import com.helpduck.helpduckusers.model.hateoas.UserHateoas;
 import com.helpduck.helpduckusers.repository.UserRepository;
 
@@ -50,5 +51,26 @@ public class UserService {
 
     User userInserted = repository.insert(user);
     return userInserted;
+  }
+
+  @Transactional(readOnly = true)
+  public Page<UserHateoas> searchUsernameAndFilterPerRole(Pageable pageable, String username, RoleEnum role) {
+    Page<User> users = repository.searchUsernameAndFilterPerRole(pageable, username, role);
+    Page<UserHateoas> page = users.map(x -> new UserHateoas(x));
+    return page;
+  }
+
+  @Transactional(readOnly = true)
+  public Page<UserHateoas> searchUsername(Pageable pageable, String username) {
+    Page<User> users = repository.searchUsername(pageable, username);
+    Page<UserHateoas> page = users.map(x -> new UserHateoas(x));
+    return page;
+  }
+
+  @Transactional(readOnly = true)
+  public Page<UserHateoas> findByRole(Pageable pageable, RoleEnum role) {
+    Page<User> users = repository.findByRole(pageable, role);
+    Page<UserHateoas> page = users.map(x -> new UserHateoas(x));
+    return page;
   }
 }

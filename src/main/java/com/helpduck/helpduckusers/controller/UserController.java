@@ -66,27 +66,29 @@ public class UserController {
 	}
 
 	@GetMapping("/search")
-	public ResponseEntity<Page<User>> getAllUserByUsername(
+	public ResponseEntity<Page<UserHateoas>> getAllUserByUsername(
 			@RequestParam Optional<RoleEnum> role,
 			@RequestParam Optional<String> username,
 			Pageable page) {
 
-		ResponseEntity<Page<User>> response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-		Page<User> pageableUser;
+		Page<UserHateoas> pageUserHateoas;
 
 		if (username.isPresent() && role.isPresent()) {
-			pageableUser = repository.searchUsernameAndFilterPerRole(page, username.get(), role.get());
+			pageUserHateoas = service.searchUsernameAndFilterPerRole(page, username.get(), role.get());
+		} else if (!username.isPresent() && !role.isPresent()) {
+			pageUserHateoas = service.findAll(page);
 		} else if (username.isPresent() && !role.isPresent()) {
-			pageableUser = repository.searchUsername(page, username.get());
+			pageUserHateoas = service.searchUsername(page, username.get());
 		} else {
-			pageableUser = repository.findByRole(page, role.get());
+			pageUserHateoas = service.findByRole(page, role.get());
 		}
 
-		if (pageableUser.getContent().size() > 0) {
-			return new ResponseEntity<Page<User>>(pageableUser, HttpStatus.FOUND);
+		if (pageUserHateoas.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-		return response;
+
+		linkAdder.addLink(pageUserHateoas);
+		return new ResponseEntity<Page<UserHateoas>>(pageUserHateoas, HttpStatus.FOUND);
 	}
 
 	@PreAuthorize("hasRole('admin')")

@@ -23,7 +23,6 @@ public class UserHateoas extends RepresentationModel<UserHateoas> {
   private String lastName;
 
   private String email;
-  private String password;
 
   private RoleEnum role;
   private DepartmentEnum department;
@@ -38,7 +37,6 @@ public class UserHateoas extends RepresentationModel<UserHateoas> {
     lastName = user.getLastName();
 
     email = user.getEmail();
-    password = user.getPassword();
 
     role = user.getRole();
     department = user.getDepartment();
