@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -92,6 +93,33 @@ public class EquipmentController {
             status = HttpStatus.OK;
         }
         return new ResponseEntity<Equipment>(status);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<EquipmentHateoas>> getAllEquipmentByDepartment(
+			@RequestParam Optional<String> name,
+            @RequestParam Optional<String> department,
+            Pageable page) {
+
+        Page<EquipmentHateoas> pageEquipmentHateoas;
+
+        //pageEquipmentHateoas = service.searchDepartment(page, department.get());
+
+		if (department.isPresent() && name.isPresent()) {
+			pageEquipmentHateoas = service.searchEquipmentNameAndFilterPerDepartment(page, name.get(), department.get());
+		} else if (!department.isPresent() && !name.isPresent()) {
+			pageEquipmentHateoas = service.findAll(page);
+		} else if (department.isPresent() && !name.isPresent()) {
+			pageEquipmentHateoas = service.findByEquipmentName(page, name.get());
+		} else {
+			pageEquipmentHateoas = service.findByDepartment(page, department.get());
+		}
+
+		if (pageEquipmentHateoas.isEmpty()) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+        linkAdder.addLink(pageEquipmentHateoas);
+        return new ResponseEntity<Page<EquipmentHateoas>>(pageEquipmentHateoas, HttpStatus.FOUND);
     }
 
 }
