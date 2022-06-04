@@ -103,8 +103,6 @@ public class EquipmentController {
 
         Page<EquipmentHateoas> pageEquipmentHateoas;
 
-        // pageEquipmentHateoas = service.searchDepartment(page, department.get());
-
         if (department.isPresent() && name.isPresent()) {
             pageEquipmentHateoas = service.findEquipmentNameAndFilterPerDepartment(page, name.get(),
                     department.get());
