@@ -35,9 +35,9 @@ public class EquipmentService {
     }
 
     @Transactional(readOnly = true)
-    public Page<EquipmentHateoas> searchEquipmentNameAndFilterPerDepartment(Pageable pageable, String name,
+    public Page<EquipmentHateoas> findEquipmentNameAndFilterPerDepartment(Pageable pageable, String name,
             String department) {
-        Page<Equipment> equipments = repository.searchEquipmentNameAndFilterPerDepartment(pageable, name, department);
+        Page<Equipment> equipments = repository.findEquipmentNameAndFilterPerDepartment(pageable, name, department);
         Page<EquipmentHateoas> page = equipments.map(x -> new EquipmentHateoas(x));
         return page;
     }
