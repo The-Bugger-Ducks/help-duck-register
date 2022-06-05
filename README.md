@@ -52,17 +52,22 @@ O servidor inciará localmente na porta 8080. Use o Insomnia para simular requis
 
 |                                                                    Tipo | Rota                     | Ação                               |
 | ----------------------------------------------------------------------: | :----------------------- | :--------------------------------- |
+|  <hr>                                                                   |  <hr>                    | **Controle de usuários**       |
 |   [![](https://img.shields.io/badge/POST-4682B4?style=for-the-badge)]() | `/auth/authentication`   | Autenticação de usuários           |
 |    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/users/`                | Listagem de usuários               |
 |    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/users/{id}`            | Dados de um usuário específico     |
 |   [![](https://img.shields.io/badge/POST-4682B4?style=for-the-badge)]() | `/users/create`          | Cadastro de usuários               |
 |    [![](https://img.shields.io/badge/PUT-9370DB?style=for-the-badge)]() | `/users/update`          | Alteração dos dados do usuário     |
+|    [![](https://img.shields.io/badge/PUT-9370DB?style=for-the-badge)]() | `/users/update-password` | Alteração de senha do usuário      |
 | [![](https://img.shields.io/badge/DELETE-CD853F?style=for-the-badge)]() | `/users/delete/{id}`     | Exclusão de usuários               |
+|    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/users/search`          | Busca de usuários por nome e/ou cargo |
+|  <hr>                                                                   |  <hr>                    | **Controle de equipamentos**       |
 |    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/equipment/`            | Listagem de equipamentos           |
 |    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/equipment/{id}`        | Dados de um equipamento específico |
 |   [![](https://img.shields.io/badge/POST-4682B4?style=for-the-badge)]() | `/equipment/create`      | Cadastro de equipamentos           |
 |    [![](https://img.shields.io/badge/PUT-9370DB?style=for-the-badge)]() | `/equipment/update`      | Alteração dos dados do equipamento |
 | [![](https://img.shields.io/badge/DELETE-CD853F?style=for-the-badge)]() | `/equipment/delete/{id}` | Exclusão de equipamentos           |
+|    [![](https://img.shields.io/badge/GET-2E8B57?style=for-the-badge)]() | `/equipment/search`      | Busca de equipamentos por nome e/ou departamento|
 
 </div>
 
