@@ -1,5 +1,5 @@
 <h1 align="center"> 
-  Microsserviço para manipulação de usuários
+  Microsserviço para manipulação de usuários e equipamentos
 </h1>
 
 Esta API, que permite o gerenciamento de usuários, foi desenvolvida visando sua utilização no projeto "Help Duck" (mais informações vide [este link](https://github.com/The-Bugger-Ducks/help-duck-documentation)).
